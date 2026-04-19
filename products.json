@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "nombre": "Collar isabelino transparente",
+    "categoria": "Recuperación y protección",
+    "especie": ["perro", "gato"],
+    "precio": 12.99,
+    "stock": 85,
+    "talla": "M",
+    "descripcion": "Collar cónico anti-mordeduras para postoperatorio.",
+    "imagen": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=300&h=300&fit=crop"
+  },
+  {
+    "id": 2,
+    "nombre": "Estetoscopio veterinario doble campana",
+    "categoria": "Instrumental clínico",
+    "especie": ["perro", "gato", "bovino", "equino"],
+    "precio": 48.50,
+    "stock": 30,
+    "talla": null,
+    "descripcion": "Estetoscopio profesional con membrana de alta sensibilidad.",
+    "imagen": "https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=300&h=300&fit=crop"
+  },
+  {
+    "id": 3,
+    "nombre": "Jeringa de insulina 1ml x100u",
+    "categoria": "Insumos médicos",
+    "especie": ["perro", "gato"],
+    "precio": 9.75,
+    "stock": 200,
+    "talla": null,
+    "descripcion": "Pack de 100 jeringas estériles desechables con aguja 27G.",
+    "imagen": "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=300&h=300&fit=crop"
+  },
+  {
+    "id": 4,
+    "nombre": "Termómetro digital rectal veterinario",
+    "categoria": "Diagnóstico",
+    "especie": ["perro", "gato", "bovino", "ovino"],
+    "precio": 15.20,
+    "stock": 60,
+    "talla": null,
+    "descripcion": "Lectura en 10 segundos, memoria de última medición, alarma de fiebre.",
+    "imagen": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=300&h=300&fit=crop"
+  },
+  {
+    "id": 5,
+    "nombre": "Bozal ajustable de nylon",
+    "categoria": "Manejo y sujeción",
+    "especie": ["perro"],
+    "precio": 7.40,
+    "stock": 120,
+    "talla": "L",
+    "descripcion": "Bozal liviano con cierre de velcro y hebilla de seguridad.",
+    "imagen": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=300&h=300&fit=crop"
+  },
+  {
+    "id": 6,
+    "nombre": "Tijera de disección punta roma",
+    "categoria": "Instrumental quirúrgico",
+    "especie": null,
+    "precio": 22.00,
+    "stock": 45,
+    "talla": null,
+    "descripcion": "Acero inoxidable quirúrgico, 14 cm, autoclavable.",
+    "imagen": "https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=300&h=300&fit=crop"
+  },
+  {
+    "id": 7,
+    "nombre": "Vendaje cohesivo 5cm x 4,5m",
+    "categoria": "Insumos médicos",
+    "especie": ["perro", "gato", "equino", "bovino"],
+    "precio": 3.60,
+    "stock": 300,
+    "talla": null,
+    "descripcion": "Vendaje autoadherente elástico, no deja residuo adhesivo.",
+    "imagen": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=300&h=300&fit=crop"
+  },
+  {
+    "id": 8,
+    "nombre": "Pinza porta agujas Mayo-Hegar",
+    "categoria": "Instrumental quirúrgico",
+    "especie": null,
+    "precio": 31.80,
+    "stock": 25,
+    "talla": null,
+    "descripcion": "16 cm, mandíbulas estriadas, cierre de trinquete, acero inoxidable.",
+    "imagen": "https://images.unsplash.com/photo-1551076805-e1869033e561?w=300&h=300&fit=crop"
+  },
+  {
+    "id": 9,
+    "nombre": "Arnés antipull acolchado",
+    "categoria": "Manejo y sujeción",
+    "especie": ["perro"],
+    "precio": 18.90,
+    "stock": 75,
+    "talla": "S",
+    "descripcion": "Diseño ergonómico que distribuye la presión en el pecho, respirable.",
+    "imagen": "https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=300&h=300&fit=crop"
+  },
+  {
+    "id": 10,
+    "nombre": "Otoscopio veterinario con luz LED",
+    "categoria": "Diagnóstico",
+    "especie": ["perro", "gato", "conejo"],
+    "precio": 54.00,
+    "stock": 18,
+    "talla": null,
+    "descripcion": "Incluye 5 espéculos intercambiables, mango antideslizante, pilas AAA.",
+    "imagen": "https://images.unsplash.com/photo-1583947581924-860bda6a26df?w=300&h=300&fit=crop"
+  }
+]

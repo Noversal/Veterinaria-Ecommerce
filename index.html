@@ -1,81 +1,103 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Veterinaria Ecommerce</title>
+    <title>Veterinaria ISTEA</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
     <div class="root">
-        <header class="bg-success">
-            <div class="d-flex flex-row w-100 mt-4 mb-4 px-4 justify-content-between">
-                <h1>
-                    Veterinaria
-                </h1>
-                <button class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-cart" viewBox="0 0 16 16">
+        <header class="bg-primary text-white py-3 shadow-sm">
+            <div class="container d-flex flex-row w-100 justify-content-between align-items-center">
+                <a href="#" class="navbar-brand text-white text-decoration-none fs-5 d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        class="bi bi-heart-pulse me-2" viewBox="0 0 16 16">
                         <path
-                            d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                            d="M8 14.41L7.9 14.3l-.03-.02c-2.61-2.22-4.52-4.04-5.07-5.59a3.89 3.89 0 0 1 .47-3.9 3.5 3.5 0 0 1 4.54-.5l.21.16a1.35 1.35 0 0 0 1.95-.31l.07-.11a3.5 3.5 0 0 1 4.7.12 3.89 3.89 0 0 1 .47 3.9c-.55 1.55-2.46 3.37-5.07 5.59l-.03.02zM12.11 3.51a2.5 2.5 0 0 0-3.32-.1c-.48.42-1.2.42-1.68 0a2.5 2.5 0 0 0-3.32.1 2.89 2.89 0 0 0-.35 2.9c.41 1.16 2.08 2.76 4.57 4.9l.06.05.06-.05c2.49-2.14 4.16-3.74 4.57-4.9a2.89 2.89 0 0 0-.35-2.9" />
                     </svg>
-                </button>
+                    Veterinaria ISTEA
+                </a>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-light btn-sm text-dark d-flex align-items-center" id="theme-toggle">
+                        <span id="theme-icon-light" class="d-none">☀️</span>
+                        <span id="theme-icon-dark">🌙</span>
+                    </button>
+                    <button class="btn btn-light btn-sm text-primary fw-semibold d-flex align-items-center"
+                        data-bs-toggle="offcanvas" data-bs-target="#offcanvas-carrito">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-cart3 me-1" viewBox="0 0 16 16">
+                            <path
+                                d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                        </svg> Carrito <span class="badge bg-primary rounded-pill ms-1" id="cart-count">0</span>
+                    </button>
+                </div>
             </div>
         </header>
-        <main class="d-flex flex-column">
-            <section class="d-flex flex-column gap-4 w-100 mt-2 mb-2 px-4">
-                <div class="search d-flex flex-row gap-2 align-items-center justify-content-center">
-                    <button class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                            fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                            <path
-                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                        </svg></button>
-                    <input type="text" placeholder="Buscar productos veterinarios...">
+
+        <main class="d-flex flex-column mb-5">
+            <section class="container mt-4 mb-4">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-body border-end-0"><svg xmlns="http://www.w3.org/2000/svg"
+                                    width="16" height="16" fill="currentColor" class="bi bi-search text-muted"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                </svg></span>
+                            <input type="text" id="search-input" class="form-control bg-body border-start-0 ps-0"
+                                placeholder="Buscar productos...">
+                        </div>
+                    </div>
                 </div>
-                <ul id="categories d-flex flex-row gap-2 align-items-center justify-content-center">
-                </ul>
-                <ul class="d-flex flex-wrap gap-3 list-unstyled align-items-center justify-content-center"
-                    id="products-list"></ul>
+            </section>
+
+            <section class="container">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="products-list">
+                    <!-- Los productos son insertados desde el archivo js -->
+                </div>
             </section>
         </main>
-
-        <footer class="bg-success">
-            <div class="d-flex justify-content-center p-4">
-                <p class="mb-0">Proyecto Realizado por GRUPO 7</p>
-            </div>
-        </footer>
     </div>
 
-    <div class="modal fade" id="product-modal" tabindex="-1" aria-labelledby="product-modal-label" aria-hidden="true">
-    </div>
-
+    <!-- Offcanvas for Shopping Cart -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas-carrito" aria-labelledby="offcanvasCarritoLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasCarritoLabel">Mi lista de compras</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <div class="offcanvas-header bg-primary text-white">
+            <h5 class="offcanvas-title d-flex align-items-center" id="offcanvasCarritoLabel">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                    class="bi bi-cart-check me-2" viewBox="0 0 16 16">
+                    <path
+                        d="M11.354 6.354a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
+                    <path
+                        d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                </svg>
+                Mi Carrito
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
         </div>
 
-
-
-        <div class="list-cart offcanvas-body"></div>
-
-        <div>
-            <p><span>Total</span> <span id="total-price"></span></p>
+        <div class="offcanvas-body d-flex flex-column gap-3" id="cart-list">
+            <!-- Para ver cant productos cargados en carrito -->
         </div>
 
-        <div class="offcanvas-footer p-3 border-top">
-            <button id="btn-finalizar" class="btn btn-primary w-100 mb-2">Finalizar compra</button>
-            <button id="btn-vaciar" class="btn btn-danger w-100">Vaciar carrito</button>
+        <div class="offcanvas-footer p-3 border-top bg-body position-absolute bottom-0 w-100">
+            <div class="d-flex justify-content-between mb-3 fw-bold fs-5">
+                <span>Total:</span>
+                <span id="total-price">$0.00</span>
+            </div>
+            <div class="d-flex gap-2">
+                <button id="btn-vaciar" class="btn btn-outline-danger w-50">Vaciar</button>
+                <button id="btn-finalizar" class="btn btn-primary w-50">Comprar</button>
+            </div>
         </div>
     </div>
-
-
-    <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
 
     <script src="index.js" type="module"></script>
-
 </body>
 
 </html>
