@@ -1,6 +1,6 @@
 import "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js";
 import { initTheme } from './theme.js';
-import { getCart, saveCart } from './storage.js';
+import { getCart, saveCart, clearCart } from './storage.js';
 import { createProductCard } from './cards.js';
 
 // Inicializa el tema (Claro/Oscuro) nativo
@@ -142,6 +142,40 @@ btnVaciar.addEventListener('click', () => {
             position: 'bottom-end'
         });
     }
+});
+
+const btnFinalizarCompra = document.getElementById('btn-finalizar');
+
+btnFinalizarCompra.addEventListener('click', () => {
+
+    if (cart.length === 0) return;
+
+    const offcanvas = bootstrap.Offcanvas.getInstance('#offcanvas-carrito');
+
+    Swal.fire({
+        title: 'Procesando pago...',
+        icon: 'info',
+        timer: 1000,
+        showConfirmButton: false,
+        toast: true,
+        position: 'bottom-end'
+    });
+
+    setTimeout(() => {
+        offcanvas.hide();
+        clearCart();
+        cart = [];
+        updateCartUI();
+        Swal.fire({
+            title: '¡Compra finalizada!',
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false,
+            toast: true,
+            position: 'bottom-end'
+        });
+    }, 1000);
+
 });
 
 // Inicio de la app
