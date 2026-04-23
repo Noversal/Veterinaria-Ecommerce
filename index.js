@@ -2,6 +2,7 @@ import "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.mi
 import { initTheme } from './theme.js';
 import { getCart, saveCart, clearCart } from './storage.js';
 import { createProductCard } from './cards.js';
+import { convertToARS, formatARS } from './cotizacion.js';
 
 // Inicializa el tema (Claro/Oscuro) nativo
 initTheme();
@@ -32,7 +33,14 @@ async function loadProducts() {
 
 // Renderizar tarjetas en el DOM
 function renderProducts(products) {
-    productsList.innerHTML = products.map(p => createProductCard(p)).join('');
+   // productsList.innerHTML = products.map(p => createProductCard(p)).join('');
+   //le agrego una propiedad mas con el precio ars
+productsList.innerHTML = products.map(p => {
+    return createProductCard({
+        ...p,
+        precioARS: convertToARS(p.precio)
+    });
+}).join('');
 
     // Asignar eventos a los botones nuevos
     const btnsAdd = document.querySelectorAll('.btn-add-cart');
@@ -42,8 +50,38 @@ function renderProducts(products) {
             addToCart(id);
         });
     });
+
+//boton detalle del producto 
+const btnsDetail = document.querySelectorAll('.btn-detail');
+
+btnsDetail.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const id = parseInt(e.currentTarget.getAttribute('data-id'));
+        showProductDetail(id);
+    });
+});
+
+
 }
 
+//Logica de detalle de productos 
+    function showProductDetail(id) {
+    const product = productsData.find(p => p.id === id);
+    if (!product) return;
+
+    Swal.fire({
+        title: product.nombre,
+        html: `
+            <img src="${product.imagen}" style="width:100%; max-height:200px; object-fit:contain; margin-bottom:10px;">
+            <p><strong>Categoría:</strong> ${product.categoria}</p>
+            <p>${product.descripcion || 'Sin descripción disponible.'}</p>
+            <p><strong>Precio:</strong> ${formatARS(convertToARS(product.precio))}</p>
+        `,
+        confirmButtonText: 'Cerrar'
+    });
+
+}
+   
 // Filtro de búsqueda
 searchInput.addEventListener('input', (e) => {
     const term = e.target.value.toLowerCase();
@@ -65,6 +103,8 @@ function addToCart(id) {
 
     saveCart(cart);
     updateCartUI();
+
+
 
     // Notificación visual (SweetAlert2)
     Swal.fire({
@@ -92,7 +132,7 @@ function updateCartUI() {
     // Renderizar lista en offcanvas
     if (cart.length === 0) {
         cartList.innerHTML = '<p class="text-muted text-center mt-4">El carrito está vacío</p>';
-        totalPriceEl.textContent = '$0.00';
+        totalPriceEl.textContent =  formatARS(0);    //'$0.00';
         return;
     }
 
@@ -100,10 +140,15 @@ function updateCartUI() {
         <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
             <div class="d-flex flex-column">
                 <span class="fw-semibold" style="font-size: 0.9rem;">${item.nombre}</span>
-                <span class="text-muted small">${item.quantity} x $${item.precio.toFixed(2)}</span>
+                <span class="text-muted small">${formatARS(convertToARS(item.quantity * item.precio))}</span>  
             </div>
+            ${'' /*comentado el precio original*/}
+            ${'' /* ${item.quantity} x $${item.precio.toFixed(2)} */}
+
             <div class="d-flex align-items-center gap-2">
-                <span class="fw-bold text-primary">$${(item.quantity * item.precio).toFixed(2)}</span>
+                <span class="fw-bold text-primary">${formatARS(convertToARS(item.quantity * item.precio))}</span> 
+                ${'' /*comentado el precio original*/}
+                ${'' /*$${(item.quantity * item.precio).toFixed(2)}*/}
                 <button class="btn btn-sm btn-outline-danger btn-remove gap-0 p-1" data-id="${item.id}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                       <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
@@ -125,7 +170,7 @@ function updateCartUI() {
 
     // Calcular total
     const total = cart.reduce((acc, item) => acc + (item.precio * item.quantity), 0);
-    totalPriceEl.textContent = `$${total.toFixed(2)}`;
+    totalPriceEl.textContent = formatARS(convertToARS(total)); //`$${total.toFixed(2)}`;
 }
 
 btnVaciar.addEventListener('click', () => {
@@ -177,6 +222,8 @@ btnFinalizarCompra.addEventListener('click', () => {
     }, 1000);
 
 });
+
+
 
 // Inicio de la app
 loadProducts();
