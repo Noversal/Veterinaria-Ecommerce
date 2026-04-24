@@ -3,6 +3,7 @@ import { initTheme } from './theme.js';
 import { getCart, saveCart, clearCart } from './storage.js';
 import { createProductCard } from './cards.js';
 import { convertToARS, formatARS } from './cotizacion.js';
+import { contador, addEventListeners } from './contador.js';
 
 // Inicializa el tema (Claro/Oscuro) nativo
 initTheme();
@@ -76,8 +77,22 @@ btnsDetail.forEach(btn => {
             <p><strong>Categoría:</strong> ${product.categoria}</p>
             <p>${product.descripcion || 'Sin descripción disponible.'}</p>
             <p><strong>Precio:</strong> ${formatARS(convertToARS(product.precio))}</p>
+         <div>${contador(id)}</div><div><button class="btn-modal-carrito" data-id="${product.id}">Agregar al carrito</button></div>
         `,
-        confirmButtonText: 'Cerrar'
+        confirmButtonText: 'Cerrar',
+        
+         didOpen: () => {
+            addEventListeners(id, 1);
+            const btnAddCart = document.querySelector('.btn-modal-carrito');
+            btnAddCart.addEventListener('click', () => {
+
+            const inputCantidad = document.querySelector(`#contador-${id}`); 
+            const cantidadElegida = inputCantidad ? parseInt(inputCantidad.textContent) : 1;
+                addToCart(id, cantidadElegida);
+                Swal.close();
+            });
+        }
+        
     });
 
 }
@@ -90,15 +105,15 @@ searchInput.addEventListener('input', (e) => {
 });
 
 // Lógica del Carrito
-function addToCart(id) {
+function addToCart(id, quantity = 1) {
     const product = productsData.find(p => p.id === id);
     if (!product) return;
 
     const existingIndex = cart.findIndex(item => item.id === id);
     if (existingIndex !== -1) {
-        cart[existingIndex].quantity += 1;
+        cart[existingIndex].quantity += quantity;
     } else {
-        cart.push({ ...product, quantity: 1 });
+        cart.push({ ...product, quantity: quantity });
     }
 
     saveCart(cart);
@@ -140,7 +155,7 @@ function updateCartUI() {
         <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
             <div class="d-flex flex-column">
                 <span class="fw-semibold" style="font-size: 0.9rem;">${item.nombre}</span>
-                <span class="text-muted small">${formatARS(convertToARS(item.quantity * item.precio))}</span>  
+                <span class="text-muted small"> ${item.quantity} x ${formatARS(convertToARS(item.precio))} </span>  
             </div>
             ${'' /*comentado el precio original*/}
             ${'' /* ${item.quantity} x $${item.precio.toFixed(2)} */}
