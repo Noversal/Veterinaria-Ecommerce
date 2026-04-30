@@ -3,7 +3,7 @@ import { initTheme } from './theme.js';
 import { getCart, saveCart, clearCart } from './storage.js';
 import { createProductCard } from './cards.js';
 import { convertToARS, formatARS } from './cotizacion.js';
-import { contador, addEventListeners } from './contador.js';
+import { contador, addEventListeners, contadorCarrito, addEventListenersCarrito } from './contador.js';
 
 // Inicializa el tema (Claro/Oscuro) nativo
 initTheme();
@@ -160,19 +160,35 @@ function updateCartUI() {
             ${'' /*comentado el precio original*/}
             ${'' /* ${item.quantity} x $${item.precio.toFixed(2)} */}
 
-            <div class="d-flex align-items-center gap-2">
-                <span class="fw-bold text-primary">${formatARS(convertToARS(item.quantity * item.precio))}</span> 
-                ${'' /*comentado el precio original*/}
-                ${'' /*$${(item.quantity * item.precio).toFixed(2)}*/}
-                <button class="btn btn-sm btn-outline-danger btn-remove gap-0 p-1" data-id="${item.id}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                      <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                    </svg>
-                </button>
+            <div class="d-flex align-items-center gap-3">
+                <div>${contadorCarrito(item.id, item.quantity)}</div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <span class="fw-bold text-primary" id="precio-item-${item.id}">${formatARS(convertToARS(item.quantity * item.precio))}</span> 
+                    <button class="btn btn-sm btn-outline-danger btn-remove gap-0 p-1" data-id="${item.id}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                          <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     `).join('');
+
+        didOpen: () => {
+            addEventListenersCarrito(id, 1);
+            const btnAddCart = document.querySelector('.btn-modal-carrito');
+            btnAddCart.addEventListener('click', () => {
+
+            const inputCantidad = document.querySelector(`#contadorCarrito-${id}`); 
+            const cantidadElegida = inputCantidad ? parseInt(inputCantidad.textContent) : 1;
+                addToCart(id, cantidadElegida);
+                Swal.close();
+            });
+        }
+
+
 
     // Eventos para botones eliminar
     const removeBtns = document.querySelectorAll('.btn-remove');
@@ -180,6 +196,37 @@ function updateCartUI() {
         btn.addEventListener('click', (e) => {
             const id = parseInt(e.currentTarget.getAttribute('data-id'));
             removeFromCart(id);
+        });
+    });
+
+    ///contador del carrito
+    cart.forEach(item => {
+        addEventListenersCarrito(item.id, item.quantity, (nuevaCantidad) => {
+            // Actualizar la cantidad en el cart
+            const cartItem = cart.find(c => c.id === item.id);
+            if (cartItem) {
+                cartItem.quantity = nuevaCantidad;
+                saveCart(cart);
+                
+                // Actualizar solo los elementos específicos sin re-renderizar todo
+                const spanCantidad = document.querySelector(`#contadorCarrito-${item.id}`);
+                if (spanCantidad) {
+                    spanCantidad.textContent = nuevaCantidad;
+                }
+                
+                // Actualizar el precio del item
+                const precioItem = document.querySelector(`#precio-item-${item.id}`);
+                if (precioItem) {
+                    precioItem.textContent = formatARS(convertToARS(item.precio * nuevaCantidad));
+                }
+                
+                // Actualizar badge y total
+                const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+                cartCount.textContent = totalItems;
+                
+                const total = cart.reduce((acc, item) => acc + (item.precio * item.quantity), 0);
+                totalPriceEl.textContent = formatARS(convertToARS(total));
+            }
         });
     });
 
