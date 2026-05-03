@@ -34,14 +34,14 @@ async function loadProducts() {
 
 // Renderizar tarjetas en el DOM
 function renderProducts(products) {
-   // productsList.innerHTML = products.map(p => createProductCard(p)).join('');
-   //le agrego una propiedad mas con el precio ars
-productsList.innerHTML = products.map(p => {
-    return createProductCard({
-        ...p,
-        precioARS: convertToARS(p.precio)
-    });
-}).join('');
+    // productsList.innerHTML = products.map(p => createProductCard(p)).join('');
+    //le agrego una propiedad mas con el precio ars
+    productsList.innerHTML = products.map(p => {
+        return createProductCard({
+            ...p,
+            precioARS: convertToARS(p.precio)
+        });
+    }).join('');
 
     // Asignar eventos a los botones nuevos
     const btnsAdd = document.querySelectorAll('.btn-add-cart');
@@ -52,21 +52,21 @@ productsList.innerHTML = products.map(p => {
         });
     });
 
-//boton detalle del producto 
-const btnsDetail = document.querySelectorAll('.btn-detail');
+    //boton detalle del producto 
+    const btnsDetail = document.querySelectorAll('.btn-detail');
 
-btnsDetail.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        const id = parseInt(e.currentTarget.getAttribute('data-id'));
-        showProductDetail(id);
+    btnsDetail.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const id = parseInt(e.currentTarget.getAttribute('data-id'));
+            showProductDetail(id);
+        });
     });
-});
 
 
 }
 
 //Logica de detalle de productos 
-    function showProductDetail(id) {
+function showProductDetail(id) {
     const product = productsData.find(p => p.id === id);
     if (!product) return;
 
@@ -80,23 +80,23 @@ btnsDetail.forEach(btn => {
          <div>${contador(id)}</div><div><button class="btn-modal-carrito" data-id="${product.id}">Agregar al carrito</button></div>
         `,
         confirmButtonText: 'Cerrar',
-        
-         didOpen: () => {
+
+        didOpen: () => {
             addEventListeners(id, 1);
             const btnAddCart = document.querySelector('.btn-modal-carrito');
             btnAddCart.addEventListener('click', () => {
 
-            const inputCantidad = document.querySelector(`#contador-${id}`); 
-            const cantidadElegida = inputCantidad ? parseInt(inputCantidad.textContent) : 1;
+                const inputCantidad = document.querySelector(`#contador-${id}`);
+                const cantidadElegida = inputCantidad ? parseInt(inputCantidad.textContent) : 1;
                 addToCart(id, cantidadElegida);
                 Swal.close();
             });
         }
-        
+
     });
 
 }
-   
+
 // Filtro de búsqueda
 searchInput.addEventListener('input', (e) => {
     const term = e.target.value.toLowerCase();
@@ -144,10 +144,13 @@ function updateCartUI() {
     const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
     cartCount.textContent = totalItems;
 
+    const cartFooter = document.getElementById('cart-footer');
+    cartFooter.classList.toggle('d-none', cart.length < 1);
+
     // Renderizar lista en offcanvas
     if (cart.length === 0) {
         cartList.innerHTML = '<p class="text-muted text-center mt-4">El carrito está vacío</p>';
-        totalPriceEl.textContent =  formatARS(0);    //'$0.00';
+        totalPriceEl.textContent = formatARS(0);    //'$0.00';
         return;
     }
 
@@ -176,17 +179,17 @@ function updateCartUI() {
         </div>
     `).join('');
 
-        didOpen: () => {
-            addEventListenersCarrito(id, 1);
-            const btnAddCart = document.querySelector('.btn-modal-carrito');
-            btnAddCart.addEventListener('click', () => {
+    didOpen: () => {
+        addEventListenersCarrito(id, 1);
+        const btnAddCart = document.querySelector('.btn-modal-carrito');
+        btnAddCart.addEventListener('click', () => {
 
-            const inputCantidad = document.querySelector(`#contadorCarrito-${id}`); 
+            const inputCantidad = document.querySelector(`#contadorCarrito-${id}`);
             const cantidadElegida = inputCantidad ? parseInt(inputCantidad.textContent) : 1;
-                addToCart(id, cantidadElegida);
-                Swal.close();
-            });
-        }
+            addToCart(id, cantidadElegida);
+            Swal.close();
+        });
+    }
 
 
 
@@ -207,23 +210,23 @@ function updateCartUI() {
             if (cartItem) {
                 cartItem.quantity = nuevaCantidad;
                 saveCart(cart);
-                
+
                 // Actualizar solo los elementos específicos sin re-renderizar todo
                 const spanCantidad = document.querySelector(`#contadorCarrito-${item.id}`);
                 if (spanCantidad) {
                     spanCantidad.textContent = nuevaCantidad;
                 }
-                
+
                 // Actualizar el precio del item
                 const precioItem = document.querySelector(`#precio-item-${item.id}`);
                 if (precioItem) {
                     precioItem.textContent = formatARS(convertToARS(item.precio * nuevaCantidad));
                 }
-                
+
                 // Actualizar badge y total
                 const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
                 cartCount.textContent = totalItems;
-                
+
                 const total = cart.reduce((acc, item) => acc + (item.precio * item.quantity), 0);
                 totalPriceEl.textContent = formatARS(convertToARS(total));
             }
