@@ -81,7 +81,7 @@ function showProductDetail(id) {
         `,
         confirmButtonText: 'Cerrar',
 
-        didOpen: () => {
+        didOpen: (toast) => {
             addEventListeners(id, 1);
             const btnAddCart = document.querySelector('.btn-modal-carrito');
             btnAddCart.addEventListener('click', () => {
@@ -89,7 +89,7 @@ function showProductDetail(id) {
                 const inputCantidad = document.querySelector(`#contador-${id}`);
                 const cantidadElegida = inputCantidad ? parseInt(inputCantidad.textContent) : 1;
                 addToCart(id, cantidadElegida);
-                Swal.close();
+                toast.close();
             });
         }
 
