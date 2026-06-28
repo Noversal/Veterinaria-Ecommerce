@@ -14,7 +14,7 @@ export function createProductCard(product) {
                  ${'' /* <div class="product-price">$${product.precio.toFixed(2)}</div> */}
                  
     <div class="product-price">${formatARS(product.precioARS)}</div>
-<button class="btn btn-dark w-100 mt-auto btn-detail" data-id="${product.id}">
+<button class="btn btn-outline-purple w-100 mt-auto btn-detail" data-id="${product.id}">
     Ver detalle
 </button>
 <button class="btn btn-primary w-100 mt-2 btn-add-cart" data-id="${product.id}">
